@@ -21,6 +21,7 @@ const (
 	InsRemoveKey            = 0xD3
 	InsVerifyPIN            = 0x20
 	InsChangePIN            = 0x21
+	InsLoadKey              = 0xD0
 	InsDeriveKey            = 0xD1
 	InsExportKey            = 0xC2
 	InsExportSeed           = 0xC3
@@ -207,6 +208,25 @@ func NewCommandDeriveKey(pathStr string) (*apdu.Command, error) {
 		0,
 		data.Bytes(),
 	), nil
+}
+
+func NewCommandLoadKey(isSeed bool, isExtended bool, data []byte) (*apdu.Command) {
+	var p1 uint8
+	if isSeed == true {
+		p1 = 0x03
+	} else if isExtended == true {
+		// isExtended indicates the user has included a chaincode
+		p1 = 0x02
+	} else {
+		p1 = 0x01
+	}
+	return apdu.NewCommand(
+		globalplatform.ClaGp,
+		InsLoadKey,
+		p1,
+		0,
+		data,
+	)
 }
 
 // Export a key
