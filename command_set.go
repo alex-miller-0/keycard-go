@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"errors"
-
 	"github.com/status-im/keycard-go/apdu"
 	"github.com/status-im/keycard-go/crypto"
 	"github.com/status-im/keycard-go/globalplatform"
@@ -92,7 +91,6 @@ func (cs *CommandSet) Pair(pairingPass string) error {
 	if _, err := rand.Read(challenge); err != nil {
 		return err
 	}
-
 	cmd := NewCommandPairFirstStep(challenge)
 	resp, err := cs.c.Send(cmd)
 	if resp.Sw == SwNoAvailablePairingSlots {
@@ -257,7 +255,6 @@ func (cs *CommandSet) ExportKey(derive bool, makeCurrent bool, onlyPublic bool, 
 	}	
 
 	resp, err := cs.sc.Send(cmd)
-	// fmt.Printf("res.Data: %x\n", resp.Data)
 	err = cs.checkOK(resp, err)
 	if err != nil {
 		return nil, err
@@ -265,6 +262,22 @@ func (cs *CommandSet) ExportKey(derive bool, makeCurrent bool, onlyPublic bool, 
 	return resp.Data, nil
 
 }
+
+
+func (cs *CommandSet) ExportSeed() ([]byte, error) {
+	cmd, err := NewCommandExportSeed()
+	if err != nil {
+		return nil, err
+	}	
+
+	resp, err := cs.sc.Send(cmd)
+	err = cs.checkOK(resp, err)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Data, nil
+}
+
 
 func (cs *CommandSet) SetPinlessPath(path string) error {
 	cmd, err := NewCommandSetPinlessPath(path)
@@ -320,16 +333,13 @@ func (cs *CommandSet) checkOK(resp *apdu.Response, err error, allowedResponses .
 	if err != nil {
 		return err
 	}
-
 	if len(allowedResponses) == 0 {
 		allowedResponses = []uint16{apdu.SwOK}
 	}
-
 	for _, code := range allowedResponses {
 		if code == resp.Sw {
 			return nil
 		}
 	}
-
 	return apdu.NewErrBadResponse(resp.Sw, "unexpected response")
 }

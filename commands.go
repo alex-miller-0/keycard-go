@@ -23,6 +23,7 @@ const (
 	InsChangePIN            = 0x21
 	InsDeriveKey            = 0xD1
 	InsExportKey            = 0xC2
+	InsExportSeed           = 0xC3
 	InsSign                 = 0xC0
 	InsSetPinlessPath       = 0xC1
 
@@ -240,6 +241,17 @@ func NewCommandExportKey(p1 uint8, p2 uint8, pathStr string) (*apdu.Command, err
 		p1,
 		p2,
 		data.Bytes(),
+	), nil
+}
+
+// Export the master seed. This should be a 64 byte buffer
+func NewCommandExportSeed() (*apdu.Command, error) {
+	return apdu.NewCommand(
+		globalplatform.ClaGp,
+		InsExportSeed,
+		0,
+		0,
+		[]byte{},
 	), nil
 }
 
