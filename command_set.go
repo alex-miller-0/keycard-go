@@ -54,7 +54,7 @@ func (cs *CommandSet) Select() error {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-	
+
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err
@@ -206,6 +206,22 @@ func (cs *CommandSet) ChangePairingSecret(password string) error {
 	resp, err := cs.sc.Send(cmd)
 
 	return cs.checkOK(resp, err)
+}
+
+func (cs *CommandSet) LoadCerts(certs []byte) error {
+	cmd := NewCommandLoadCerts(certs)
+	resp, err := cs.c.Send(cmd)
+	return cs.checkOK(resp, err)
+}
+
+func (cs *CommandSet) ExportCerts() ([]byte, error) {
+	cmd := NewCommandExportCerts()
+	resp, err := cs.c.Send(cmd)
+	if err = cs.checkOK(resp, err); err != nil {
+		return nil, err
+	}
+
+	return resp.Data, nil
 }
 
 func (cs *CommandSet) GenerateKey() ([]byte, error) {

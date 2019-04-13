@@ -22,6 +22,8 @@ const (
 	InsVerifyPIN            = 0x20
 	InsChangePIN            = 0x21
 	InsLoadKey              = 0xD0
+	InsLoadCerts            = 0xFA
+	InsExportCerts          = 0xFB
 	InsDeriveKey            = 0xD1
 	InsExportKey            = 0xC2
 	InsExportSeed           = 0xC3
@@ -208,6 +210,26 @@ func NewCommandDeriveKey(pathStr string) (*apdu.Command, error) {
 		0,
 		data.Bytes(),
 	), nil
+}
+
+func NewCommandLoadCerts(certs []byte) (*apdu.Command) {
+	return apdu.NewCommand(
+		globalplatform.ClaGp,
+		InsLoadCerts,
+		0,
+		0,
+		certs,
+	)
+}
+
+func NewCommandExportCerts() (*apdu.Command) {
+	return apdu.NewCommand(
+		globalplatform.ClaGp,
+		InsExportCerts,
+		0,
+		0,
+		[]byte{},
+	)
 }
 
 func NewCommandLoadKey(isSeed bool, isExtended bool, data []byte) (*apdu.Command) {
