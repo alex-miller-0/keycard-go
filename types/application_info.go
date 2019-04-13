@@ -2,7 +2,6 @@ package types
 
 import (
 	"errors"
-
 	"github.com/status-im/keycard-go/apdu"
 )
 
@@ -66,13 +65,17 @@ func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
 	info := &ApplicationInfo{
 		Installed: true,
 	}
-
 	if data[0] == TagSelectResponsePreInitialized {
-		info.SecureChannelPublicKey = data[2:]
+		info.SecureChannelPublicKey = data[2:67]
 		info.Capabilities = CapabilityCredentialsManagement
-
 		if len(info.SecureChannelPublicKey) > 0 {
 			info.Capabilities = info.Capabilities | CapabilitySecureChannel
+		}
+
+		// Get the UID if it exists
+		if (data[67] == 0x8F) {
+			uidL := data[68]
+			info.InstanceUID = data[69: 69 + uidL]
 		}
 
 		return info, nil

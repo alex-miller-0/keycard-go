@@ -54,7 +54,7 @@ func (cs *CommandSet) Select() error {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-
+	
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err
