@@ -39,7 +39,6 @@ func (cs *CommandSet) Select() error {
 	if err != nil {
 		return err
 	}
-
 	cmd := apdu.NewCommand(
 		0x00,
 		globalplatform.InsSelect,
@@ -47,14 +46,12 @@ func (cs *CommandSet) Select() error {
 		uint8(0x00),
 		instanceAID,
 	)
-
 	cmd.SetLe(0)
 	resp, err := cs.c.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err

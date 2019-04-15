@@ -73,7 +73,7 @@ func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
 		}
 
 		// Get the UID if it exists
-		if (data[67] == 0x8F) {
+		if (len(data) > 67 && data[67] == 0x8F) {
 			uidL := data[68]
 			info.InstanceUID = data[69: 69 + uidL]
 		}
