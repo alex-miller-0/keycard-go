@@ -221,8 +221,8 @@ func (cs *CommandSet) ExportCerts() ([]byte, error) {
 	return resp.Data, nil
 }
 
-func (cs *CommandSet) GenerateKey() ([]byte, error) {
-	cmd := NewCommandGenerateKey()
+func (cs *CommandSet) GenerateKey(p1 uint8) ([]byte, error) {
+	cmd := NewCommandGenerateKey(p1)
 	resp, err := cs.sc.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
 		return nil, err
@@ -231,8 +231,8 @@ func (cs *CommandSet) GenerateKey() ([]byte, error) {
 	return resp.Data, nil
 }
 
-func (cs *CommandSet) LoadKey(isSeed bool, isExtended bool, data []byte) error {
-	cmd := NewCommandLoadKey(isSeed, isExtended, data)
+func (cs *CommandSet) LoadKey(p1 uint8, p2 uint8, data []byte) error {
+	cmd := NewCommandLoadKey(p1, p2, data)
 	res, err := cs.sc.Send(cmd)
 	return cs.checkOK(res, err);
 }

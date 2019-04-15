@@ -118,11 +118,11 @@ func NewCommandGetStatus(p1 uint8) *apdu.Command {
 	)
 }
 
-func NewCommandGenerateKey() *apdu.Command {
+func NewCommandGenerateKey(p1 uint8) *apdu.Command {
 	return apdu.NewCommand(
 		globalplatform.ClaGp,
 		InsGenerateKey,
-		0,
+		p1,
 		0,
 		[]byte{},
 	)
@@ -232,21 +232,12 @@ func NewCommandExportCerts() (*apdu.Command) {
 	)
 }
 
-func NewCommandLoadKey(isSeed bool, isExtended bool, data []byte) (*apdu.Command) {
-	var p1 uint8
-	if isSeed == true {
-		p1 = 0x03
-	} else if isExtended == true {
-		// isExtended indicates the user has included a chaincode
-		p1 = 0x02
-	} else {
-		p1 = 0x01
-	}
+func NewCommandLoadKey(p1 uint8, p2 uint8, data []byte) (*apdu.Command) {
 	return apdu.NewCommand(
 		globalplatform.ClaGp,
 		InsLoadKey,
 		p1,
-		0,
+		p2,
 		data,
 	)
 }
