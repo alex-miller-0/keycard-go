@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/status-im/keycard-go/hexutils"
+	"github.com/alex-miller-0/keycard-go/hexutils"
 	"github.com/stretchr/testify/assert"
 )
 

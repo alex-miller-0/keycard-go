@@ -4,7 +4,7 @@ import (
 	"bytes"
 
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/status-im/keycard-go/apdu"
+	"github.com/alex-miller-0/keycard-go/apdu"
 )
 
 var (

@@ -5,9 +5,9 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/status-im/keycard-go/apdu"
-	"github.com/status-im/keycard-go/derivationpath"
-	"github.com/status-im/keycard-go/globalplatform"
+	"github.com/alex-miller-0/keycard-go/apdu"
+	"github.com/alex-miller-0/keycard-go/derivationpath"
+	"github.com/alex-miller-0/keycard-go/globalplatform"
 )
 
 const (

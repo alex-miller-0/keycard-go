@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 
-	"github.com/status-im/keycard-go/apdu"
-	"github.com/status-im/keycard-go/derivationpath"
+	"github.com/alex-miller-0/keycard-go/apdu"
+	"github.com/alex-miller-0/keycard-go/derivationpath"
 )
 
 const hardenedStart = 0x80000000 // 2^31

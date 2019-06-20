@@ -1,9 +1,9 @@
 package globalplatform
 
 import (
-	"github.com/status-im/keycard-go/apdu"
-	"github.com/status-im/keycard-go/hexutils"
-	"github.com/status-im/keycard-go/types"
+	"github.com/alex-miller-0/keycard-go/apdu"
+	"github.com/alex-miller-0/keycard-go/hexutils"
+	"github.com/alex-miller-0/keycard-go/types"
 )
 
 // SecureChannel wraps another channel and sends wrapped commands using SCP02Wrapper.
