@@ -219,25 +219,27 @@ func NewCommandDeriveKey(pathStr string) (*apdu.Command, error) {
 //  @param {pathStr}
 //		Derivation path of format "m/x/x/x/x/x", e.g. "m/44'/0'/0'/0/0"
 func NewCommandExportKey(p1 uint8, p2 uint8, pathStr string) (*apdu.Command, error) {
-	
-	// Choose to derive based on the value of p1
+	startingPoint, path, err := derivationpath.Decode(pathStr)
+	if err != nil {
+		return nil, err
+	}
+
+	deriveP1, err := derivationP1FromStartingPoint(startingPoint)
+	if err != nil {
+		return nil, err
+	}
+
 	data := new(bytes.Buffer)
-	if (p1 == 0x01 || p1 == 0x02) {
-		_, path, err := derivationpath.Decode(pathStr)
-		if err != nil {
+	for _, segment := range path {
+		if err := binary.Write(data, binary.BigEndian, segment); err != nil {
 			return nil, err
-		}
-		for _, segment := range path {
-			if err := binary.Write(data, binary.BigEndian, segment); err != nil {
-				return nil, err
-			}
 		}
 	}
 
 	return apdu.NewCommand(
 		globalplatform.ClaGp,
 		InsExportKey,
-		p1,
+		p1|deriveP1,
 		p2,
 		data.Bytes(),
 	), nil
@@ -281,4 +283,19 @@ func NewCommandSign(data []byte, p1 uint8) (*apdu.Command, error) {
 		0,
 		data,
 	), nil
+}
+
+// Internal function. Get the type of starting point for the derivation path.
+// Used for both DeriveKey and ExportKey
+func derivationP1FromStartingPoint(s derivationpath.StartingPoint) (uint8, error) {
+	switch s {
+	case derivationpath.StartingPointMaster:
+		return P1DeriveKeyFromMaster, nil
+	case derivationpath.StartingPointParent:
+		return P1DeriveKeyFromParent, nil
+	case derivationpath.StartingPointCurrent:
+		return P1DeriveKeyFromCurrent, nil
+	default:
+		return uint8(0), fmt.Errorf("invalid startingPoint %d", s)
+	}
 }
