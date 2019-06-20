@@ -114,11 +114,11 @@ func NewCommandGetStatus(p1 uint8) *apdu.Command {
 	)
 }
 
-func NewCommandGenerateKey() *apdu.Command {
+func NewCommandGenerateKey(p1 uint8) *apdu.Command {
 	return apdu.NewCommand(
 		globalplatform.ClaGp,
 		InsGenerateKey,
-		0,
+		p1,
 		0,
 		[]byte{},
 	)
