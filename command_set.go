@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"errors"
-
 	"github.com/alex-miller-0/keycard-go/apdu"
 	"github.com/alex-miller-0/keycard-go/crypto"
 	"github.com/alex-miller-0/keycard-go/globalplatform"
@@ -37,6 +36,7 @@ func (cs *CommandSet) SetPairingInfo(key []byte, index int) {
 
 func (cs *CommandSet) Select() error {
 	instanceAID, err := identifiers.KeycardInstanceAID(identifiers.KeycardDefaultInstanceIndex)
+	logger.Debug("opening instance AID", "hex", instanceAID)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (cs *CommandSet) Select() error {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-
+	logger.Debug("SELECT raw data:", "hex", resp.Data);
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err

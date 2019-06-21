@@ -7,8 +7,6 @@ import (
 	"github.com/alex-miller-0/keycard-go/hexutils"
 )
 
-var logger = log.New("package", "io")
-
 // Transmitter defines an interface with one method to transmit raw commands and receive raw responses.
 type Transmitter interface {
 	Transmit([]byte) ([]byte, error)
