@@ -36,7 +36,7 @@ func (cs *CommandSet) SetPairingInfo(key []byte, index int) {
 
 func (cs *CommandSet) Select() error {
 	instanceAID, err := identifiers.KeycardInstanceAID(identifiers.KeycardDefaultInstanceIndex)
-	logger.Debug("opening instance AID", "hex", instanceAID)
+	// logger.Debug("opening instance AID", "hex", instanceAID)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (cs *CommandSet) Select() error {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-	logger.Debug("SELECT raw data:", "hex", resp.Data);
+	// logger.Debug("SELECT raw data:", "hex", resp.Data);
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err

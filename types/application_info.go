@@ -63,6 +63,7 @@ func (a *ApplicationInfo) HasNDEFCapability() bool {
 }
 
 func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
+	logger.Info("Parsing application data")
 	info := &ApplicationInfo{
 		Installed: true,
 	}
@@ -83,32 +84,32 @@ func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
 	if data[0] != TagApplicationInfoTemplate {
 		return nil, ErrWrongApplicationInfoTemplate
 	}
-
+	logger.Info("Getting instanceUID")
 	instanceUID, err := apdu.FindTag(data, TagApplicationInfoTemplate, uint8(0x8F))
 	if err != nil {
 		return nil, err
 	}
-
+	logger.Info("Getting pubKey")
 	pubKey, err := apdu.FindTag(data, TagApplicationInfoTemplate, uint8(0x80))
 	if err != nil {
 		return nil, err
 	}
-
+	logger.Info("Getting appVersion")
 	appVersion, err := apdu.FindTag(data, TagApplicationInfoTemplate, uint8(0x02))
 	if err != nil {
 		return nil, err
 	}
-
+	logger.Info("Getting availableSlots")
 	availableSlots, err := apdu.FindTagN(data, 1, TagApplicationInfoTemplate, uint8(0x02))
 	if err != nil {
 		return nil, err
 	}
-
+	logger.Info("Getting keyUID")
 	keyUID, err := apdu.FindTagN(data, 0, TagApplicationInfoTemplate, uint8(0x8E))
 	if err != nil {
 		return nil, err
 	}
-
+	logger.Info("Selected all data")
 	capabilities := CapabilityAll
 	capabilitiesBytes, err := apdu.FindTag(data, TagApplicationInfoCapabilities)
 	if err == nil && len(capabilitiesBytes) > 0 {
