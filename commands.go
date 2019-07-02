@@ -44,6 +44,16 @@ const (
 	SwNoAvailablePairingSlots = 0x6A84
 )
 
+func NewCommandGeneric(command uint8, p1 uint8, p2 uint8, data []byte) *apdu.Command {
+	return apdu.NewCommand(
+		globalplatform.ClaGp,
+		command,
+		p1,
+		p2,
+		data,
+	)
+}
+
 func NewCommandInit(data []byte) *apdu.Command {
 	return apdu.NewCommand(
 		globalplatform.ClaGp,

@@ -32,6 +32,7 @@ const (
 type ApplicationInfo struct {
 	Installed              bool
 	Initialized            bool
+	SeedExportable         bool
 	InstanceUID            []byte
 	SecureChannelPublicKey []byte
 	Version                []byte
@@ -63,7 +64,7 @@ func (a *ApplicationInfo) HasNDEFCapability() bool {
 }
 
 func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
-	logger.Info("Parsing application data")
+	logger.Debug("Parsing application dataw", "hex", hexutils.BytesToHexWithSpaces(data))
 	info := &ApplicationInfo{
 		Installed: true,
 	}
@@ -116,12 +117,18 @@ func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
 		capabilities = Capability(capabilitiesBytes[0])
 	}
 
+	seedExportable, err := apdu.FindTag(data, TagApplicationInfoTemplate, uint8(0x9F))
+	if err != nil {
+		return nil, err
+	}
+
 	info.InstanceUID = instanceUID
 	info.SecureChannelPublicKey = pubKey
 	info.Version = appVersion
 	info.AvailableSlots = availableSlots
 	info.KeyUID = keyUID
 	info.Capabilities = capabilities
+	info.SeedExportable = seedExportable
 
 	return info, nil
 }

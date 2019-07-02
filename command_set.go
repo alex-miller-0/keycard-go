@@ -34,6 +34,13 @@ func (cs *CommandSet) SetPairingInfo(key []byte, index int) {
 	}
 }
 
+// Call any command which does not require a secure channel
+func (cs *CommandSet) GenericCommand(command byte, p1 byte, p2 byte, data []byte) error {
+	cmd := NewCommandGeneric(uint8(command), uint8(p1), uint8(p2), data)
+	resp, err := cs.sc.Send(cmd)
+	return cs.checkOK(resp, err)
+}
+
 func (cs *CommandSet) Select() error {
 	instanceAID, err := identifiers.KeycardInstanceAID(identifiers.KeycardDefaultInstanceIndex)
 	// logger.Debug("opening instance AID", "hex", instanceAID)
