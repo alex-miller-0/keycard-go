@@ -32,7 +32,7 @@ const (
 type ApplicationInfo struct {
 	Installed              bool
 	Initialized            bool
-	SeedExportable         bool
+	SeedExportable         []byte
 	InstanceUID            []byte
 	SecureChannelPublicKey []byte
 	Version                []byte
@@ -64,7 +64,6 @@ func (a *ApplicationInfo) HasNDEFCapability() bool {
 }
 
 func ParseApplicationInfo(data []byte) (*ApplicationInfo, error) {
-	logger.Debug("Parsing application dataw", "hex", hexutils.BytesToHexWithSpaces(data))
 	info := &ApplicationInfo{
 		Installed: true,
 	}
