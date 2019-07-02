@@ -35,8 +35,16 @@ func (cs *CommandSet) SetPairingInfo(key []byte, index int) {
 }
 
 // Call any command which does not require a secure channel
-func (cs *CommandSet) GenericCommand(command byte, p1 byte, p2 byte, data []byte) ([]byte, error) {
-	cmd := NewCommandGeneric(uint8(command), uint8(p1), uint8(p2), data)
+func (cs *CommandSet) GenericCommand(command uint8, p1 uint8, p2 uint8, data []byte) ([]byte, error) {
+	cmd := apdu.NewCommand(
+		0x00,
+		command,
+		p1,
+		p2,
+		data,
+	)
+	
+	cmd.SetLe(0)
 	resp, err := cs.c.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
 		return nil, err
