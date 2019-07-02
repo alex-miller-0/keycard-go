@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-
+	
 	"github.com/alex-miller-0/keycard-go/apdu"
 	"github.com/alex-miller-0/keycard-go/derivationpath"
 	"github.com/alex-miller-0/keycard-go/globalplatform"
