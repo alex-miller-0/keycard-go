@@ -1,7 +1,6 @@
 package keycard
 
 import (
-	"fmt"
 	"crypto/rand"
 	"crypto/sha256"
 	"errors"
@@ -37,7 +36,6 @@ func (cs *CommandSet) SetPairingInfo(key []byte, index int) {
 
 // Call any command which does not require a secure channel
 func (cs *CommandSet) GenericCommand(tag uint8, command uint8, p1 uint8, p2 uint8, data []byte) ([]byte, error) {
-	fmt.Printf("Doing generic command\n")
 	cmd := apdu.NewCommand(
 		tag,
 		command,
@@ -45,11 +43,9 @@ func (cs *CommandSet) GenericCommand(tag uint8, command uint8, p1 uint8, p2 uint
 		p2,
 		data,
 	)
-	
-	cmd.SetLe(0)
+	// cmd.SetLe(0)
 	resp, err := cs.c.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
-		fmt.Printf("not okay!\n")
 		return nil, err
 	}
 	return resp.Data, nil
@@ -61,7 +57,7 @@ func (cs *CommandSet) Select() error {
 	if err != nil {
 		return err
 	}
-
+	
 	cmd := apdu.NewCommand(
 		0x00,
 		globalplatform.InsSelect,
