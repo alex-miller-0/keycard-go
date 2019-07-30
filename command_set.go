@@ -43,7 +43,7 @@ func (cs *CommandSet) GenericCommand(command uint8, p1 uint8, p2 uint8, data []b
 		p2,
 		data,
 	)
-	
+
 	cmd.SetLe(0)
 	resp, err := cs.c.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
@@ -73,7 +73,7 @@ func (cs *CommandSet) Select() error {
 		cs.ApplicationInfo = &types.ApplicationInfo{}
 		return err
 	}
-	// logger.Debug("SELECT raw data:", "hex", resp.Data);
+	logger.Info("SELECT raw data:", "hex", resp.Data);
 	appInfo, err := types.ParseApplicationInfo(resp.Data)
 	if err != nil {
 		return err
