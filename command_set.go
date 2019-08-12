@@ -43,6 +43,7 @@ func (cs *CommandSet) GenericCommand(tag uint8, command uint8, p1 uint8, p2 uint
 		p2,
 		data,
 	)
+
 	// cmd.SetLe(0)
 	resp, err := cs.c.Send(cmd)
 	if err = cs.checkOK(resp, err); err != nil {
