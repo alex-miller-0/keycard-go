@@ -33,7 +33,7 @@ func (c *NormalChannel) Send(cmd *apdu.Command) (*apdu.Response, error) {
 		return nil, err
 	}
 
-	logger.Debug("apdu command", "hex", hexutils.BytesToHexWithSpaces(rawCmd))
+	// logger.Debug("apdu command", "hex", hexutils.BytesToHexWithSpaces(rawCmd))
 	rawResp, err := c.t.Transmit(rawCmd)
 	if err != nil {
 		return nil, err

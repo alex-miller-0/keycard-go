@@ -3,9 +3,9 @@ package globalplatform
 import (
 	"errors"
 	"fmt"
-
 	"github.com/alex-miller-0/keycard-go/apdu"
 	"github.com/alex-miller-0/keycard-go/globalplatform/crypto"
+	"github.com/alex-miller-0/keycard-go/hexutils"
 )
 
 const supportedSCPVersion = 2
@@ -53,6 +53,12 @@ func NewSession(cardKeys *SCP02Keys, resp *apdu.Response, hostChallenge []byte) 
 	}
 
 	sessionKeys := NewSCP02Keys(sessionEncKey, sessionMacKey)
+	logger.Debug("Verifying card cryptogram")
+	logger.Debug("encKey", "hex", hexutils.BytesToHexWithSpaces(sessionKeys.Enc()))
+	logger.Debug("hostChallenge", "hex", hexutils.BytesToHexWithSpaces(hostChallenge))
+	logger.Debug("cardChallenge", "hex", hexutils.BytesToHexWithSpaces(cardChallenge))
+	logger.Debug("cardCryptogram", "hex", hexutils.BytesToHexWithSpaces(cardCryptogram))
+
 	verified, err := crypto.VerifyCryptogram(sessionKeys.Enc(), hostChallenge, cardChallenge, cardCryptogram)
 	if err != nil {
 		return nil, err

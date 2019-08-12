@@ -2,7 +2,6 @@ package globalplatform
 
 import (
 	"github.com/alex-miller-0/keycard-go/apdu"
-	"github.com/alex-miller-0/keycard-go/hexutils"
 	"github.com/alex-miller-0/keycard-go/types"
 )
 
@@ -24,12 +23,11 @@ func NewSecureChannel(session *Session, c types.Channel) *SecureChannel {
 
 // Send sends wrapped commands to the inner channel.
 func (c *SecureChannel) Send(cmd *apdu.Command) (*apdu.Response, error) {
-	rawCmd, err := cmd.Serialize()
-	if err != nil {
-		return nil, err
-	}
+	// rawCmd, err := cmd.Serialize()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	logger.Debug("wrapping apdu command", "hex", hexutils.BytesToHexWithSpaces(rawCmd))
 	wrappedCmd, err := c.w.Wrap(cmd)
 	if err != nil {
 		return nil, err
